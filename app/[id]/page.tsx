@@ -31,7 +31,7 @@ function useDebounce<T>(value: T, delay: number): T {
 
 export default function RoomPage() {
   const params = useParams()
-  const roomId = (params.id as string).toUpperCase()
+  const roomId = params.id as string
   const [text, setText] = useState("")
   const [isConnected, setIsConnected] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
@@ -167,7 +167,7 @@ export default function RoomPage() {
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 text-muted-foreground/70">
                 <Users className="w-3.5 h-3.5" />
-                <span className="font-mono text-xs">{roomId.toUpperCase()}</span>
+                <span className="font-mono text-xs">{roomId}</span>
               </div>
               <CopyButton text={shareUrl} showIcon="link" />
             </div>

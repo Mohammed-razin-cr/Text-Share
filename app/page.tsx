@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { nanoid } from "nanoid"
-import { ArrowRight, Zap, Globe, Sparkles } from "lucide-react"
+import { ArrowRight, Zap, Globe, Sparkles, ArrowLeftRight } from "lucide-react"
 import { GeometricLoader } from "@/components/geometric-loader"
 import { AnimatedBackground } from "@/components/animated-background"
 import { AnimatedButton } from "@/components/animated-button"
@@ -78,13 +78,35 @@ const features = [
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isCreating, setIsCreating] = useState(false)
+  const [isJoining, setIsJoining] = useState(false)
+  const [customPath, setCustomPath] = useState("")
+  const [error, setError] = useState("")
+  const [host, setHost] = useState("localhost:3000")
   const router = useRouter()
   const prefersReducedMotion = useReducedMotion()
 
+  useEffect(() => {
+    setHost(window.location.host)
+  }, [])
+
   const handleCreateRoom = () => {
     setIsCreating(true)
-    const roomId = nanoid(10)
-    router.push(`/room/${roomId}`)
+    const roomId = nanoid(5)
+    router.push(`/${roomId}`)
+  }
+
+  const handleJoinRoom = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmedPath = customPath.trim()
+    
+    if (trimmedPath.length === 0) {
+      setError("Please enter a custom path")
+      return
+    }
+
+    setError("")
+    setIsJoining(true)
+    router.push(`/${encodeURIComponent(trimmedPath)}`)
   }
 
   return (
@@ -167,7 +189,59 @@ export default function HomePage() {
                   A premium, distraction-free space to share and sync text instantly. No sign-up required.
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="mt-8">
+                <motion.div variants={itemVariants} className="mt-8 space-y-4">
+                  {/* Dontpad-style URL input */}
+                  <form onSubmit={handleJoinRoom} className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+                    <div className="flex items-center bg-secondary/80 border border-border/50 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-ring/20 w-full sm:w-auto">
+                      <span className="px-4 py-3 text-muted-foreground font-mono text-sm">
+                        {host}/
+                      </span>
+                      <input
+                        type="text"
+                        value={customPath}
+                        onChange={(e) => {
+                          setCustomPath(e.target.value)
+                          setError("")
+                        }}
+                        placeholder="your-secret-page"
+                        className="px-2 py-3 bg-transparent text-foreground border-none outline-none font-mono text-sm min-w-[180px]"
+                      />
+                    </div>
+                    <AnimatedButton type="submit" disabled={isJoining || customPath.length === 0} className="min-w-[100px]">
+                      {isJoining ? (
+                        <span className="flex items-center gap-2">
+                          <motion.span
+                            animate={prefersReducedMotion ? {} : { rotate: 360 }}
+                            transition={{
+                              duration: 1,
+                              repeat: Number.POSITIVE_INFINITY,
+                              ease: "linear",
+                            }}
+                            className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
+                          />
+                          Going...
+                        </span>
+                      ) : (
+                        <span>Go!</span>
+                      )}
+                    </AnimatedButton>
+                  </form>
+                  {error && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-xs text-destructive text-center"
+                    >
+                      {error}
+                    </motion.p>
+                  )}
+
+                  <div className="flex items-center gap-4 my-4">
+                    <div className="flex-1 h-px bg-border/50" />
+                    <span className="text-xs text-muted-foreground/60">or</span>
+                    <div className="flex-1 h-px bg-border/50" />
+                  </div>
+
                   <AnimatedButton onClick={handleCreateRoom} disabled={isCreating} className="min-w-[180px]">
                     {isCreating ? (
                       <span className="flex items-center gap-2">
