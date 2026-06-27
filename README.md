@@ -8,7 +8,7 @@
 [![Firebase](https://img.shields.io/badge/Firebase-Realtime-orange?style=flat-square&logo=firebase)](https://firebase.google.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 
-[View Demo](#) · [Report Bug](#) · [Request Feature](#)
+[View Demo](https://share-txt.netlify.app/) · [Report Bug](#) · [Request Feature](#)
 
 </div>
 
@@ -18,6 +18,7 @@
 
 ```
 → Real-time synchronization across devices
+→ Custom URLs (like /your-room-name)
 → Auto-delete after 53 minutes
 → Shareable links - no authentication
 → Unlimited text capacity
