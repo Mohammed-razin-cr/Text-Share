@@ -8,8 +8,8 @@ export function Footer() {
 
       <div className="container mx-auto px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground/60">Text Share - Real-time text collaboration</p>
-          <p className="text-xs text-muted-foreground/60">
+          <p className="text-xs text-muted-foreground">Text Share - Real-time text collaboration</p>
+          <p className="text-xs text-muted-foreground">
             Created by{" "}
             <a
               href="https://mohammed-razin-cr.me/"
